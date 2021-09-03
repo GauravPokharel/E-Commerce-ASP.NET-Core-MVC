@@ -1,0 +1,56 @@
+﻿@model ProductDetailsModel
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="text-center">
+    <h1 class="display-4">Edit</h1>
+</div>
+<form method="post" asp-controller="ProductDetails" asp-action="edit">
+    <div class="form-group">
+        <label asp-for="ProductName">Product Name</label>
+        <input type="text" class="form-control" asp-for="ProductName" value="@Model.ProductName" />
+        <span asp-validation-for="ProductName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price">Price</label>
+        <input type="number" class="form-control" min="1" asp-for="Price" value="@Model.Price" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Discount">Discount</label>
+        <input type="number" min="0" max="100" class="form-control" asp-for="Discount" value="@Model.Discount">
+        <span asp-validation-for="Discount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description">Description</label>
+        <textarea class="form-control" asp-for="Description" value="@Model.Description"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryId">Category</label>
+        <select name="CategoryId" class="form-control">
+            @foreach (var item in Model.CategoryList)
+            {
+                if (item.Id == Model.CategoryId)
+                {
+                    <option value="@item.Id" selected="selected"> @item.CategoryName </option>
+
+                }
+                else
+                {
+                    <option value="@item.Id"> @item.CategoryName </option>
+
+                }
+
+            }
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Stock">Product Quantiy</label>
+        <input type="number" min="1" class="form-control" value="@Model.Stock" asp-for="Stock">
+        <span asp-validation-for="Stock" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+

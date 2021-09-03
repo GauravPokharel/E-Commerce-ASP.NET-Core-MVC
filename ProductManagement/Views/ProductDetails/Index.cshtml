@@ -1,0 +1,62 @@
+﻿@using Newtonsoft.Json;
+@using ProductManagement.Services;
+@model List<ProductDetailsModel>
+@{
+    ViewData["Title"] = "Index";
+    var response = new ServiceResponse();
+    if (TempData["response"] != null) { response = JsonConvert.DeserializeObject<ServiceResponse>((string)TempData["response"]); }
+}
+@if (response != null)
+{
+    if (response.IsSuccess && !string.IsNullOrEmpty(response.Message))
+    {
+        <div class="alert alert-success">@response.Message</div>
+    }
+    else if (!string.IsNullOrEmpty(response.Message))
+    {
+        <div class="alert alert-warning">@response.Message</div>
+    }
+
+}
+
+<div class="text-center">
+    <h1 class="display-4">Product Details</h1>
+</div>
+<a asp-controller="ProductDetails" asp-action="create" type="button" class="btn btn-primary">Add New Product Details</a>
+<div class="text-center">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Product Category</th>
+                <th scope="col">Price</th>
+                <th scope="col">Stock</th>
+                <th scope="col">Created Date</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int index = 1;}
+            @foreach (var product in @Model)
+            {
+                <tr>
+                    <td scope="row">@index</td>
+                    <td><a asp-controller="productDetails" asp-action="Details" asp-route-id="@product.Id">@product.ProductName</a></td>
+                    <td>@product.Category.CategoryName</td>
+                    <td>@product.Price</td>
+                    <td>@product.Stock</td>
+                    <td>@product.CreatedDate</td>
+                    <td>
+                        <a asp-controller="productDetails" asp-action="edit" asp-route-id="@product.Id" class="btn btn-primary">Edit</a>
+                        <a asp-controller="productDetails" asp-action="delete" asp-route-id="@product.Id" class="btn btn-danger" onclick="return confirm('Are you sure to delete product')">Delete</a>
+                    </td>
+                </tr>
+                index++;
+            }
+        </tbody>
+    </table>
+</div>
+@*
+        To add script code inside Script downbelow
+    @section Script{ }*@

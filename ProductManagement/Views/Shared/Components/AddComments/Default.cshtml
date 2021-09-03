@@ -1,0 +1,39 @@
+﻿@model CommentModel
+@{
+}
+<div>
+    <input type="text" id="comment" />
+    <input type="number" id="review" max="5" min="1" value="1" />
+    <button onclick="callme()">Submit </button>
+</div>
+<script>
+    function callme() {
+        var _comment = document.getElementById("comment");
+        var _review = document.getElementById("review");
+        var ele = document.createElement('div');
+        ele.innerText = _comment.value + 'with rating of' + _review.value;;
+
+        var contentEle = document.getElementById("comment-section");
+        contentEle.appendChild(ele);
+
+        // data to be sent to the POST request
+        let _data = {
+            Comments: _comment.value,
+            Review: parseInt(_review.value),
+            ProductId: 
+        }
+        console.log(_data)
+        fetch('/home/PostComment', {
+            method: "POST",
+            body: JSON.stringify(_data),
+            headers: {
+                'Accept': 'application/json; charset=utf-8',
+                'Content-Type': 'application/json;charset=UTF-8'
+            }
+        })
+            .then(response => response.json())
+            .then(json => { console.log(json)} );
+       @* _comment.value = '';
+        _review.value = '';*@
+    }
+</script>

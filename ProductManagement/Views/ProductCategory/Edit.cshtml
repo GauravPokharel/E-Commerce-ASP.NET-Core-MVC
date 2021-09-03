@@ -1,0 +1,17 @@
+﻿@model ProductCategoryModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Edit</h1>
+</div>
+<form method="post" asp-controller="ProductCategory" asp-action="edit">
+    <div class="form-group">
+        <label asp-for="CategoryName">Category Name</label>
+        <input type="text" class="form-control" asp-for="CategoryName" value="@Model.CategoryName"/>
+        <span asp-validation-for="CategoryName" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+

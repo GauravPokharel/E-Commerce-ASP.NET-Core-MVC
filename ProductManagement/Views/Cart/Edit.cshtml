@@ -1,0 +1,31 @@
+﻿@model CartModel
+@{
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+}
+<div style="width:100%;">
+    <h1 class="display-2">@Model.ProductInfo.ProductName</h1>
+    <hr />
+    @if (Model.ProductInfo.Discount == null)
+    {
+        <h5 class="display-5">Price=@Model.ProductInfo.Price</h5>
+    }
+    @if (Model.ProductInfo.Discount != null)
+    {
+        <h5 class="display-5">Discount=@Model.ProductInfo.Discount%</h5>
+        <br />
+        <h5 class="display-5">Price=<del>@Model.ProductInfo.Price</del> <ins>@Model.ProductInfo.DiscountedPrice</ins></h5>
+    }
+    <hr />
+    <form class="form-inline" asp-controller="Cart" asp-action="Edit" method="Post">
+
+        <div class="form-group">
+            <label asp-for="OrderQuantity">Order Quantity =</label>
+            <input type="number" class="form-control" asp-for="OrderQuantity" value="@Model.OrderQuantity" min="1" max="@Model.ProductInfo.Stock">
+        </div>
+
+        <input type="hidden" value="@Model.ProductInfo.ProductId" asp-for="ProductInfo.ProductId" />
+        <button type="submit" class="btn btn-primary mb-2">Add To Cart</button>
+    </form>
+</div>
+
+

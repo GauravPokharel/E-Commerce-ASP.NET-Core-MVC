@@ -1,0 +1,50 @@
+﻿@model ProductDetailsModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<form method="post" asp-controller="ProductDetails" asp-action="create">
+    <div class="form-group">
+        <label asp-for="ProductName">Product Name</label>
+        <input type="text" class="form-control" asp-for="ProductName">
+        <span asp-validation-for="ProductName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price">Product Price</label>
+        <input type="number" min="1" class="form-control" asp-for="Price">
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Discount">Discount</label>
+        <input type="number" min="0" max="100" class="form-control" asp-for="Discount">
+        <span asp-validation-for="Discount" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description">Description</label>
+        <textarea class="form-control" asp-for="Description"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="CategoryId">Category</label>
+        <select name="CategoryId" class="form-control">
+            @foreach (var item in Model.CategoryList)
+            {
+                <option value="@item.Id"> @item.CategoryName </option>
+
+            }
+        </select>
+        <div class="form-group">
+            <label asp-for="Stock">Product Quantiy</label>
+            <input type="number" min="1" class="form-control" asp-for="Stock">
+            <span asp-validation-for="Stock" class="text-danger"></span>
+        </div>
+        @* <select asp-for="CategoryId" asp-items=""></select>*@
+        @*Data should be in select list form to use asp-tag helper with select*@
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+
+

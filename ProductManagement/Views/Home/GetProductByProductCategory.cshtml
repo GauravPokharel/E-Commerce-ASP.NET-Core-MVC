@@ -1,0 +1,59 @@
+﻿@model List<ProductDetailsModel>
+@{
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    ViewData["Title"] = ViewBag.Title;
+}
+<div class="text-center">
+    <h1 class="display-4">@ViewBag.Title</h1>
+    <hr />
+</div>
+
+<div class="row">
+    @foreach (var product in @Model)
+    {
+        string substring = null;
+        if(product.Description!=null && product.Description.Length>30){
+            substring = product.Description.Substring(0, 29) + "...";
+        }
+        if (product.Description != null && product.Description.Length < 30)
+        {
+            substring = product.Description;
+        }
+        <div class="col-sm-4 col-lg-4 col-md-4">
+            <div class="bg-light text-center overflow-hidden m-4">
+                <div class="m-3 p-3">
+                    <a asp-controller="Home" asp-action="ProductDetailsForClient" asp-route-id=@product.Id><h2 class="display-5">@product.ProductName</h2></a>
+                    <a asp-controller="Home" asp-action="ProductDetailsForClient" asp-route-id=@product.Id><p>@substring</p></a>
+                </div>
+                <div class="bg-dark box-shadow mx-auto m-3 p-3" style="width: 80%; height: 300px; border-radius: 21px 21px 21px 21px; color:white;"> <p>And an even wittier subheading.</p></div>
+                @if (product.Discount == null)
+                {
+                    <span class="display-5">Price=@product.Price</span>
+                }
+                @if (product.Discount != null)
+                {
+                    <span class="display-5">Discount=@product.Discount%</span>
+                    <br>
+                    <hr />
+                    <span class="display-5">Price=<del>@product.Price</del> <ins>@product.DiscountedPrice</ins></span>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,35 @@
+﻿@model ProductDetailsModel
+@{
+    ViewData["Title"] = "ProductDetailsForClient";
+}
+<div style="width:100%;">
+    <h1 class="display-2">@Model.ProductName</h1>
+    <hr />
+    <div class="row">
+        <div class="col-sm-6 col-md-7 col-lg-7">
+            @if (Model.Discount == null)
+            {
+                <h5 class="display-5">Price=@Model.Price</h5>
+            }
+            @if (Model.Discount != null)
+            {
+                <h5 class="display-5">Discount=@Model.Discount%</h5>
+                <br />
+                <h5 class="display-5">Price=<del>@Model.Price</del> <ins>@Model.DiscountedPrice</ins></h5>
+            }
+        </div>
+        <div class="col-sm col-md col-lg">
+            <h5 class="display-5">Stock=@Model.Stock</h5>
+            <hr />
+            <a asp-controller="productDetails" asp-action="edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            <a asp-controller="productDetails" asp-action="delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+    <hr />
+    <div style="width:100%;">
+        <p>@Model.Description</p>
+    </div>
+    <hr />
+</div>
+
+

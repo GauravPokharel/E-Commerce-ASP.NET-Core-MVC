@@ -1,0 +1,11 @@
+﻿@model CartModel
+@{
+}
+<form method="post" asp-controller="Cart" asp-action="AddLocation">
+    <div class="form-group">
+        <label asp-for="DeliveryDestination">Delivery Destination</label>
+        <input type="text" class="form-control" asp-for="DeliveryDestination">
+        <span asp-validation-for="DeliveryDestination" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary" onclick="return confirm('Are you sure? Delivery Destination can not be changed once confirmed.')">Submit</button>
+</form>

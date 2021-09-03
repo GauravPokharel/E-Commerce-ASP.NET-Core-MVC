@@ -1,0 +1,106 @@
+﻿@using Newtonsoft.Json;
+@using ProductManagement.Services;
+@model List<CartModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    ServiceResponse response = new ServiceResponse();
+    OutOfStockResponse res = new OutOfStockResponse();
+    if (TempData["res"] != null)
+    {
+        res = JsonConvert.DeserializeObject<OutOfStockResponse>((string)TempData["res"]);
+    }
+    if (TempData["response"] != null)
+    {
+        response = JsonConvert.DeserializeObject<ServiceResponse>((string)TempData["response"]);
+    }
+}
+@if (response != null)
+{
+    if (response.Message != null)
+    {
+        <div class="alert alert-warning">@response.Message</div>
+    }
+}
+@if (res != null)
+{
+    if (res.Message != null)
+    {
+        <div class="alert alert-warning">@res.Message</div>
+    }
+    if (res.ProductNames != null)
+    {
+        <div class="alert alert-warning">
+            @foreach (var item in res.ProductNames)
+            {
+                <p>@item</p>
+                <br />
+            }
+        </div>
+
+    }
+}
+
+    <div class="text-center">
+        <h1 class="display-4">My Cart</h1>
+    </div>
+    <a asp-controller="Home" asp-action="index" type="button" class="btn btn-primary">Add More Product</a>
+    <div class="text-center">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Price Per Product (Kg|Piece)</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{int index = 1;
+                    double TotalPrice = 0.0;}
+                @foreach (var item in @Model)
+                {
+                    double price = 0.0;
+                    <tr>
+                        <td scope="row">@index</td>
+                        <td>@item.ProductInfo.ProductName</td>
+                        @if (item.ProductInfo.Discount == null)
+                        {
+                            <td>@item.ProductInfo.Price</td>
+
+                            price = item.ProductInfo.Price * item.OrderQuantity;
+                            TotalPrice += price;
+                        }
+                        @if (item.ProductInfo.Discount != null)
+                        {
+                            <td>
+                                Discount=@item.ProductInfo.Discount%
+                                <hr />
+                                Price=<del>@item.ProductInfo.Price</del>
+                                <hr />
+                                Discounted Price<ins>@item.ProductInfo.DiscountedPrice</ins>
+                            </td>
+
+                            price = item.ProductInfo.DiscountedPrice * item.OrderQuantity;
+                            TotalPrice += price;
+                        }
+                        <td>@item.OrderQuantity</td>
+                        <td>@price</td>
+                        <td>
+                            <a asp-controller="Cart" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                            <a asp-controller="Cart" asp-action="Delete" asp-route-id="@item.Id" onclick="return confirm('Are you sure to delete product from cart')" class="btn btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    index++;
+                }
+                <tr>
+                    <th colspan="3">Total</th>
+                    <td colspan="3">@TotalPrice</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <hr />
+    <vc:add-location-in-cart></vc:add-location-in-cart>

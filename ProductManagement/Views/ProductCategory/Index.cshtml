@@ -1,0 +1,56 @@
+﻿@using Newtonsoft.Json;
+@using ProductManagement.Services;
+@model List<ProductCategoryModel>
+@{
+    ViewData["Title"] = "Index";
+    var response = new ServiceResponse();
+    if (TempData["response"] != null) { response = JsonConvert.DeserializeObject<ServiceResponse>((string)TempData["response"]); }
+
+}
+@if (response != null)
+{
+    if (response.IsSuccess && !string.IsNullOrEmpty(response.Message))
+    {
+        <div class="alert alert-success">@response.Message</div>
+    }
+    else if (!string.IsNullOrEmpty(response.Message))
+    {
+        <div class="alert alert-warning">@response.Message</div>
+    }
+
+}
+
+<div class="text-center">
+    <h1 class="display-4">Product Category</h1>
+</div>
+<a asp-controller="ProductCategory" asp-action="create" type="button" class="btn btn-primary">Add New Product Category</a>
+<div class="text-center">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Category Name</th>
+                <th scope="col">Created Date</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int index = 1;}
+            @foreach (var productCategory in @Model)
+            {
+                <tr>
+                    <th scope="row">@index</th>
+                    <th>@productCategory.CategoryName</th>
+                    <td>@productCategory.CreatedDate</td>
+                    <td>
+                        <a asp-controller="productCategory" asp-action="edit" asp-route-id="@productCategory.Id" class="btn btn-primary">Edit</a>
+                        <a asp-controller="productCategory" asp-action="delete" asp-route-id="@productCategory.Id" onclick="return confirm('Are you sure to delete product category')" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+                index++;
+            }
+        </tbody>
+    </table>
+</div>
+
+
